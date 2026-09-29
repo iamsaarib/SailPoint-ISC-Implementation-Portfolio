@@ -1,0 +1,37 @@
+{
+    "id": "example-contractor-end-date-transform-id",
+    "name": "SA-1002_Determine Contractor End Date",
+    "description": "Applies a conditional Velocity expression to dynamically prefix and format end-dates exclusively for contractor workforce identities.",
+    "type": "static",
+    "attributes": {
+        "value": "#if($employmentType == 'Contractor')$contractorEndDate#end",
+        "employmentType": {
+            "type": "identityAttribute",
+            "attributes": {
+                "name": "employmentType"
+            }
+        },
+        "contractorEndDate": {
+            "type": "concat",
+            "attributes": {
+                "values": [
+                    "CON END ",
+                    {
+                        "type": "dateFormat",
+                        "attributes": {
+                            "inputFormat": "yyyy-MM-dd'T'HH:mm:ss",
+                            "outputFormat": "MM-dd-yyyy",
+                            "input": {
+                                "type": "identityAttribute",
+                                "attributes": {
+                                    "name": "endDate"
+                                }
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "internal": false
+}
