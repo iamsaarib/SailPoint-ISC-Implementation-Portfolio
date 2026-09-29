@@ -1,0 +1,145 @@
+{
+    "id": "d375d5c3-4c68-4bbe-9b9e-b4be464d29af",
+    "name": "SA-1002_Determine LCS",
+    "description": "Advanced lifecycle state calculation using nested date logic and Apache Velocity template expressions to transition identities through pre-hire, active, inactive, and deleted states.",
+    "type": "static",
+    "attributes": {
+        "requiresPeriodicRefresh": "true",
+        "twoDaysAfterTerm": {
+            "attributes": {
+                "negativeCondition": "no",
+                "positiveCondition": "yes",
+                "firstDate": "now",
+                "operator": "gte",
+                "secondDate": {
+                    "type": "dateFormat",
+                    "attributes": {
+                        "inputFormat": "yyyy-MM-dd'T'HH:mm",
+                        "outputFormat": "ISO8601",
+                        "input": {
+                            "attributes": {
+                                "input": {
+                                    "attributes": {
+                                        "inputFormat": "yyyy-MM-dd'T'HH:mm:ss",
+                                        "outputFormat": "ISO8601",
+                                        "input": {
+                                            "attributes": {
+                                                "attributeName": "contractEndDate",
+                                                "sourceName": "Mock HR System"
+                                            },
+                                            "type": "accountAttribute"
+                                        }
+                                    },
+                                    "type": "dateFormat"
+                                },
+                                "expression": "+2d/d",
+                                "roundUp": false
+                            },
+                            "type": "dateMath"
+                        }
+                    }
+                }
+            },
+            "type": "dateCompare"
+        },
+        "beforeTermDate": {
+            "attributes": {
+                "negativeCondition": "no",
+                "positiveCondition": "yes",
+                "firstDate": "now",
+                "operator": "lte",
+                "secondDate": {
+                    "type": "dateFormat",
+                    "attributes": {
+                        "inputFormat": "yyyy-MM-dd'T'HH:mm",
+                        "outputFormat": "ISO8601",
+                        "input": {
+                            "attributes": {
+                                "input": {
+                                    "attributes": {
+                                        "inputFormat": "yyyy-MM-dd'T'HH:mm:ss",
+                                        "outputFormat": "ISO8601",
+                                        "input": {
+                                            "attributes": {
+                                                "attributeName": "contractEndDate",
+                                                "sourceName": "Mock HR System"
+                                            },
+                                            "type": "accountAttribute"
+                                        }
+                                    },
+                                    "type": "dateFormat"
+                                },
+                                "expression": "+10h/h",
+                                "roundUp": false
+                            },
+                            "type": "dateMath"
+                        }
+                    }
+                }
+            },
+            "type": "dateCompare"
+        },
+        "beforeHireDate": {
+            "attributes": {
+                "negativeCondition": "no",
+                "positiveCondition": "yes",
+                "firstDate": "now",
+                "operator": "lt",
+                "secondDate": {
+                    "attributes": {
+                        "inputFormat": "yyyy-MM-dd'T'HH:mm:ss",
+                        "outputFormat": "ISO8601",
+                        "input": {
+                            "attributes": {
+                                "attributeName": "contractStartDate",
+                                "sourceName": "Mock HR System"
+                            },
+                            "type": "accountAttribute"
+                        }
+                    },
+                    "type": "dateFormat"
+                }
+            },
+            "type": "dateCompare"
+        },
+        "sevenDaysOut": {
+            "attributes": {
+                "negativeCondition": "no",
+                "positiveCondition": "yes",
+                "firstDate": "now",
+                "operator": "gte",
+                "secondDate": {
+                    "type": "dateFormat",
+                    "attributes": {
+                        "inputFormat": "yyyy-MM-dd'T'HH:mm",
+                        "outputFormat": "ISO8601",
+                        "input": {
+                            "attributes": {
+                                "input": {
+                                    "attributes": {
+                                        "inputFormat": "yyyy-MM-dd'T'HH:mm:ss",
+                                        "outputFormat": "ISO8601",
+                                        "input": {
+                                            "attributes": {
+                                                "attributeName": "contractStartDate",
+                                                "sourceName": "Mock HR System"
+                                            },
+                                            "type": "accountAttribute"
+                                        }
+                                    },
+                                    "type": "dateFormat"
+                                },
+                                "expression": "-7d/d",
+                                "roundUp": false
+                            },
+                            "type": "dateMath"
+                        }
+                    }
+                }
+            },
+            "type": "dateCompare"
+        },
+        "value": "#if($sevenDaysOut=='yes' && $beforeHireDate=='yes')prehire#elseif($beforeTermDate=='no' && $twoDaysAfterTerm=='no')inactive#elseif($twoDaysAfterTerm=='yes')deleted#elseif($beforeHireDate=='no')active#{else}unknown#end"
+    },
+    "internal": false
+}
