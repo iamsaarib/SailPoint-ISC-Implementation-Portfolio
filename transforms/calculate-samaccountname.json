@@ -1,0 +1,29 @@
+{
+    "id": "f18c341e-5a8f-4cf6-b45e-2d38ac75545a",
+    "name": "SA-1002_Calculate SAM",
+    "description": "Calculates the standard enterprise samAccountName format by joining lowercase firstname and lastname with a dot separator.",
+    "type": "lower",
+    "attributes": {
+        "input": {
+            "type": "concat",
+            "attributes": {
+                "values": [
+                    {
+                        "type": "identityAttribute",
+                        "attributes": {
+                            "name": "firstname"
+                        }
+                    },
+                    ".",
+                    {
+                        "type": "identityAttribute",
+                        "attributes": {
+                            "name": "lastname"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "internal": false
+}
