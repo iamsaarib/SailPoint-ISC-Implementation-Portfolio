@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE Rule PUBLIC "sailpoint.dtd" "sailpoint.dtd">
+<Rule name="Mock-WebService-BeforeOperation-ModifyBody" type="WebServiceBeforeOperation">
+  <Description>
+    This rule is executed before Web Services provisioning operations. It intercepts the REST 
+    request body, parses the payload JSON, validates account creation parameters, fetches live 
+    target group arrays via restClient, and enforces role-dependency business rules.
+  </Description>
+  <Signature returnType="sailpoint.object.EndPoint">
+    <Inputs>
+      <Argument name="application">
+        <Description>The application object being processed.</Description>
+      </Argument>
+      <Argument name="requestEndPoint">
+        <Description>The current request information containing headers, body, context URL, and method type.</Description>
+      </Argument>
+      <Argument name="oldResponseMap">
+        <Description>Earlier response object map, if applicable.</Description>
+      </Argument>
+      <Argument name="restClient">
+        <Description>REST Client Object used to execute secondary internal HTTP operations.</Description>
+      </Argument>
+    </Inputs>
+    <Returns>
+      <Argument name="EndPoint">
+        <Description>Updated EndPoint Object with mutated payload body mapping configurations.</Description>
+      </Argument>
+    </Returns>
+  </Signature>
+  <Source>
+    
+  </Source>
+</Rule>
