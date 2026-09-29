@@ -1,0 +1,29 @@
+{
+    "id": "example-ou-lookup-transform-id",
+    "name": "SA-1002_Calculate OU",
+    "description": "Determines the target Active Directory Organizational Unit (OU) by cleansing the incoming employmentType attribute and executing a key-value table lookup.",
+    "type": "lookup",
+    "attributes": {
+        "input": {
+            "type": "lower",
+            "attributes": {
+                "input": {
+                    "type": "trim",
+                    "attributes": {
+                        "input": {
+                            "type": "identityAttribute",
+                            "attributes": {
+                                "name": "employmentType"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "table": {
+            "employee": "OU=Employee,OU=People,DC=example,DC=com",
+            "contractor": "OU=Contractor,OU=People,DC=example,DC=com"
+        }
+    },
+    "internal": false
+}
